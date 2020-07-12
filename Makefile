@@ -58,7 +58,7 @@ Src/system_stm32f1xx.c
 
 # ASM sources
 ASM_SOURCES =  \
-./Drivers/CMSIS/Device/ST/STM32F1xx/Source/Templates/gcc/startup_stm32f103xe.s
+startup_stm32f103xe.s
 
 
 #######################################
