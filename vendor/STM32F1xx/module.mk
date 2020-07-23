@@ -1,4 +1,4 @@
-STM32F1XX_SRC = /home/sy/github/mcu_framework/vendor/STM32F1xx
+STM32F1XX_SRC = ${TOP}/vendor/STM32F1xx
 
 ###################################################################
 #源文件
@@ -20,9 +20,9 @@ ASM_SOURCES += $(STM32F1XX_SRC)Drivers/CMSIS/Device/ST/STM32F1xx/Source/Template
 
 ###################################################################
 #头文件路径
-C_INCLUDES  += -I$(STM32F1XX_SRC)/Drivers/STM32F1xx_HAL_Driver/Inc
-C_INCLUDES  += -I$(STM32F1XX_SRC)/Drivers/CMSIS/Device/ST/STM32F1xx/Include
-C_INCLUDES  += -I$(STM32F1XX_SRC)/Drivers/STM32F1xx_HAL_Driver/Inc/Legacy
-C_INCLUDES  += -I$(STM32F1XX_SRC)/Drivers/CMSIS/Device/ST/STM32F1xx/Include
-C_INCLUDES  += -I$(STM32F1XX_SRC)/Drivers/CMSIS/Include
-C_INCLUDES  += -I$(STM32F1XX_SRC)/Drivers/CMSIS/Include
+C_INCLUDES += -I$(STM32F1XX_SRC)/Drivers/STM32F1xx_HAL_Driver/Inc
+C_INCLUDES += -I$(STM32F1XX_SRC)/Drivers/CMSIS/Device/ST/STM32F1xx/Include
+C_INCLUDES += -I$(STM32F1XX_SRC)/Drivers/STM32F1xx_HAL_Driver/Inc/Legacy
+C_INCLUDES += -I$(STM32F1XX_SRC)/Drivers/CMSIS/Device/ST/STM32F1xx/Include
+C_INCLUDES += -I$(STM32F1XX_SRC)/Drivers/CMSIS/Include
+C_INCLUDES += -I$(STM32F1XX_SRC)/Drivers/CMSIS/Include

@@ -1,12 +1,10 @@
-LWIP_SRC = /home/sy/github/mcu_framework/components/lwip-1.4.1
+LWIP_SRC = ${TOP}/components/lwip-1.4.1
 
 ###################################################################
 #源文件
 C_SOURCES  += $(LWIP_SRC)/src/netif/ethernetif.c
-C_SOURCES  += $(LWIP_SRC)/src/netif/loopif.c
 C_SOURCES  += $(LWIP_SRC)/src/netif/etharp.c
 C_SOURCES  += $(LWIP_SRC)/src/netif/slipif.c
-C_SOURCES  += $(LWIP_SRC)/src/netif/ethernet_ii.c
 
 C_SOURCES  += $(LWIP_SRC)/src/core/def.c
 C_SOURCES  += $(LWIP_SRC)/src/core/dhcp.c

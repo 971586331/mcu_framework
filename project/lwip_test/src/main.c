@@ -20,39 +20,19 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-
-/* Private includes ----------------------------------------------------------*/
-/* USER CODE BEGIN Includes */
-
-/* USER CODE END Includes */
-
-/* Private typedef -----------------------------------------------------------*/
-/* USER CODE BEGIN PTD */
-
-/* USER CODE END PTD */
-
-/* Private define ------------------------------------------------------------*/
-/* USER CODE BEGIN PD */
-
-/* USER CODE END PD */
-
-/* Private macro -------------------------------------------------------------*/
-/* USER CODE BEGIN PM */
-
-/* USER CODE END PM */
-
-/* Private variables ---------------------------------------------------------*/
-
-/* USER CODE BEGIN PV */
-
-/* USER CODE END PV */
+#include "enc28j60.h"
+#include "enc28j60_spi.h"
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 void MX_GPIO_Init(void);
-/* USER CODE BEGIN PFP */
+extern void lwip_demo(void *pdata);
 
-/* USER CODE END PFP */
+unsigned int system_tick_num = 0;
+unsigned int sys_now(void)
+{
+    return system_tick_num;
+}
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
@@ -102,6 +82,16 @@ int main(void)
   MX_GPIO_Init();
   /* USER CODE BEGIN 2 */
 
+    spi1_cs_init();
+    SPI1_Init();
+
+    struct enc28j60_interface enc28j60_interface_t;
+    enc28j60_interface_t.spi_cs = spi1_cs_enable;
+    enc28j60_interface_t.spi_readwrite = SPI1_ReadWriteByte;
+    enc28j60InterfaceInit(enc28j60_interface_t);
+
+    lwip_demo(NULL);
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -111,10 +101,10 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-    HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8, GPIO_PIN_RESET);
-    delay_ms(1000);
-    HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8, GPIO_PIN_SET);
-    delay_ms(1000);
+    // HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8, GPIO_PIN_RESET);
+    // delay_ms(1000);
+    // HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8, GPIO_PIN_SET);
+    // delay_ms(1000);
   }
   /* USER CODE END 3 */
 }

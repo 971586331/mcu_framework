@@ -179,12 +179,14 @@ void PendSV_Handler(void)
 /**
   * @brief This function handles System tick timer.
   */
+extern unsigned int system_tick_num;
 void SysTick_Handler(void)
 {
   /* USER CODE BEGIN SysTick_IRQn 0 */
-
+    system_tick_num += 20;
+    HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_8);
   /* USER CODE END SysTick_IRQn 0 */
-  HAL_IncTick();
+    HAL_IncTick();
   /* USER CODE BEGIN SysTick_IRQn 1 */
 
   /* USER CODE END SysTick_IRQn 1 */
