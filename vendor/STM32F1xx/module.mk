@@ -16,7 +16,7 @@ C_SOURCES += $(STM32F1XX_SRC)/Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_fla
 C_SOURCES += $(STM32F1XX_SRC)/Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c
 C_SOURCES += $(STM32F1XX_SRC)/Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_exti.c
 
-ASM_SOURCES += $(STM32F1XX_SRC)Drivers/CMSIS/Device/ST/STM32F1xx/Source/Templates/gcc/startup_stm32f103xe.s
+ASM_SOURCES += $(STM32F1XX_SRC)/Drivers/CMSIS/Device/ST/STM32F1xx/Source/Templates/gcc/startup_stm32f103xe.s
 
 ###################################################################
 #头文件路径

@@ -64,6 +64,9 @@ CPU = -mcpu=cortex-m3
 
 # float-abi
 
+# ASM sources
+ASM_SOURCES =  \
+../../../startup_stm32f103xe.s
 
 # mcu
 MCU = $(CPU) -mthumb $(FPU) $(FLOAT-ABI)
