@@ -45,7 +45,7 @@
 
 #include "lwip/opt.h"
 
-#if 1 /* don't build, this is only a skeleton, see previous comment */
+//#if 1 /* don't build, this is only a skeleton, see previous comment */
 
 #include "lwip/def.h"
 #include "lwip/mem.h"
@@ -57,7 +57,7 @@
 #include "netif/ppp_oe.h"
 
 #include "enc28j60.h"
-#include "string.h"
+#include <string.h>
 
 
 /* Define those to better describe your network interface. */
@@ -365,4 +365,4 @@ ethernetif_init(struct netif *netif)
 
   return ERR_OK;
 }
-#endif /* 0 */
+//#endif /* 0 */

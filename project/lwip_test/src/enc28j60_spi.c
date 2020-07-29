@@ -1,3 +1,4 @@
+#include "main.h"
 #include "enc28j60_spi.h"
 
 //////////////////////////////////////////////////////////////////////////////////	 
@@ -89,15 +90,15 @@ void HAL_SPI_MspInit(SPI_HandleTypeDef *hspi)
     GPIO_Initure.Pin=GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_7;
     GPIO_Initure.Mode=GPIO_MODE_AF_PP;              //复用推挽输出
     GPIO_Initure.Pull=GPIO_PULLUP;                  //上拉
-    GPIO_Initure.Speed=GPIO_SPEED_HIGH;             //快速            
-    HAL_GPIO_Init(GPIOA,&GPIO_Initure);
+    GPIO_Initure.Speed=GPIO_SPEED_FREQ_HIGH;             //快速            
+    HAL_GPIO_Init(GPIOA, &GPIO_Initure);
 }
 
 //SPI速度设置函数
 //SPI速度=fAPB1/分频系数
 //@ref SPI_BaudRate_Prescaler:SPI_BAUDRATEPRESCALER_2~SPI_BAUDRATEPRESCALER_2 256
 //fAPB1时钟一般为42Mhz：
-void SPI1_SetSpeed(u8 SPI_BaudRatePrescaler)
+void SPI1_SetSpeed(uint8_t SPI_BaudRatePrescaler)
 {
     assert_param(IS_SPI_BAUDRATE_PRESCALER(SPI_BaudRatePrescaler));//判断有效性
     __HAL_SPI_DISABLE(&SPI1_Handler);            //关闭SPI
@@ -110,9 +111,9 @@ void SPI1_SetSpeed(u8 SPI_BaudRatePrescaler)
 //SPI1 读写一个字节
 //TxData:要写入的字节
 //返回值:读取到的字节
-u8 SPI1_ReadWriteByte(u8 TxData)
+uint8_t SPI1_ReadWriteByte(uint8_t TxData)
 {
-    u8 Rxdata;
+    uint8_t Rxdata;
     HAL_SPI_TransmitReceive(&SPI1_Handler,&TxData,&Rxdata,1, 1000);       
  	return Rxdata;          		    //返回收到的数据		
 }

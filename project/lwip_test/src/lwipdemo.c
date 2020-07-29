@@ -1,3 +1,4 @@
+#include "main.h"
 #include "lwip/netif.h"
 #include "lwip/ip.h"
 #include "lwip/tcp.h"
@@ -8,18 +9,17 @@
 #include "lwip/pbuf.h"
 #include <stdio.h>	
 #include <string.h>
-#include "ethernet_ii.h"
 #include <autoip.h>
+
+#include "ethernetif.h"
 
 const struct eth_addr des_mac = {{0xff,0xff,0xff,0xff,0xff,0xff}};
 //const struct eth_addr des_mac = {{0x3c,0x52,0x82,0x52,0xba,0xed}};
 const struct eth_addr src_mac = {{0x04,0x02,0x35,0x00,0x00,0x01}};
 
-unsigned char sendbuff[ETHERNET_II_DATA_LEN];
-
 //extern functions
-extern err_t ethernetif_init(struct netif *netif);
-extern void process_mac(void);
+// extern err_t ethernetif_init(struct netif *netif);
+// extern void process_mac(void);
 
 //global data
 struct netif enc28j60_netif;
@@ -105,7 +105,6 @@ void lwip_demo(void *pdata)
 
 	//for periodic handle
 
-    memset(sendbuff, 0x11, ETHERNET_II_DATA_LEN);
 	while(1)
 	{
 		process_mac();

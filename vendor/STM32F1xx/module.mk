@@ -15,6 +15,7 @@ C_SOURCES += $(STM32F1XX_SRC)/Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_pwr
 C_SOURCES += $(STM32F1XX_SRC)/Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash.c
 C_SOURCES += $(STM32F1XX_SRC)/Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c
 C_SOURCES += $(STM32F1XX_SRC)/Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_exti.c
+C_SOURCES += $(STM32F1XX_SRC)/Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_spi.c
 
 ASM_SOURCES += $(STM32F1XX_SRC)/Drivers/CMSIS/Device/ST/STM32F1xx/Source/Templates/gcc/startup_stm32f103xe.s
 
