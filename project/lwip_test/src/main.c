@@ -20,8 +20,10 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include <stdio.h>
 #include "enc28j60.h"
 #include "enc28j60_spi.h"
+#include "uart_printf.h"
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
@@ -82,15 +84,17 @@ int main(void)
   MX_GPIO_Init();
   /* USER CODE BEGIN 2 */
 
-    spi1_cs_init();
-    SPI1_Init();
+  uart_init(115200);
 
     struct enc28j60_interface enc28j60_interface_t;
-    enc28j60_interface_t.spi_cs = spi1_cs_enable;
+    enc28j60_interface_t.spi_it_init = spi1_it_init;
+    enc28j60_interface_t.spi_cs_init = spi1_cs_init;
+    enc28j60_interface_t.spi_cs_control = spi1_cs_enable;
+    enc28j60_interface_t.spi_init = SPI1_Init;
     enc28j60_interface_t.spi_readwrite = SPI1_ReadWriteByte;
     enc28j60InterfaceInit(enc28j60_interface_t);
 
-    lwip_demo(NULL);
+    //lwip_demo(NULL);
 
   /* USER CODE END 2 */
 
@@ -99,7 +103,9 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-
+    HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_8);
+    printf("run !\n");
+    delay_ms(1000);
     /* USER CODE BEGIN 3 */
     // HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8, GPIO_PIN_RESET);
     // delay_ms(1000);

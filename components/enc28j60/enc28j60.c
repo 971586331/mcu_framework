@@ -8,8 +8,11 @@ struct enc28j60_interface enc28j60_dev;
 
 void enc28j60InterfaceInit(struct enc28j60_interface data)
 {
-    enc28j60_dev.spi_cs = data.spi_cs;
-    enc28j60_dev.spi_readwrite = data.spi_readwrite;
+    enc28j60_dev = data;
+
+    enc28j60_dev.spi_it_init();
+    enc28j60_dev.spi_cs_init();
+    enc28j60_dev.spi_init();
 }
 
 /****************************************************************************
@@ -24,7 +27,7 @@ unsigned char enc28j60ReadOp(unsigned char op, unsigned char address)
 {
 	unsigned char dat = 0;
 
-    enc28j60_dev.spi_cs(0);
+    enc28j60_dev.spi_cs_control(0);
 
 	dat = op | (address & ADDR_MASK);
 	enc28j60_dev.spi_readwrite(dat);
@@ -35,7 +38,7 @@ unsigned char enc28j60ReadOp(unsigned char op, unsigned char address)
 		dat = enc28j60_dev.spi_readwrite(0xFF);
 	}
 	// release CS
-	enc28j60_dev.spi_cs(1);
+	enc28j60_dev.spi_cs_control(1);
 	return dat;
 }
 /****************************************************************************
@@ -49,12 +52,12 @@ unsigned char enc28j60ReadOp(unsigned char op, unsigned char address)
 void enc28j60WriteOp(unsigned char op, unsigned char address, unsigned char data)
 {
 	unsigned char dat = 0;								  	  
-	enc28j60_dev.spi_cs(0);	                      //使能ENC28J60 SPI片选  		
+	enc28j60_dev.spi_cs_control(0);	                      //使能ENC28J60 SPI片选  		
 	dat = op | (address & ADDR_MASK);	  //OP--3位操作码 (address & ADDR_MASK)--5位参数
 	enc28j60_dev.spi_readwrite(dat);				  //SPI1 写
 	dat = data;
 	enc28j60_dev.spi_readwrite(dat);				  //SPI1 写操作数据
-	enc28j60_dev.spi_cs(1);						  //禁止ENC28J60 SPI片选  完成操作
+	enc28j60_dev.spi_cs_control(1);						  //禁止ENC28J60 SPI片选  完成操作
 }
 /****************************************************************************
 * 名    称：void enc28j60ReadBuffer(unsigned int len, unsigned char* data)
@@ -66,7 +69,7 @@ void enc28j60WriteOp(unsigned char op, unsigned char address, unsigned char data
 ****************************************************************************/ 
 void enc28j60ReadBuffer(unsigned int len, unsigned char* data)
 	{
-	enc28j60_dev.spi_cs(0);
+	enc28j60_dev.spi_cs_control(0);
 	// 读命令
 	enc28j60_dev.spi_readwrite(ENC28J60_READ_BUF_MEM);
 	while(len)
@@ -77,7 +80,7 @@ void enc28j60ReadBuffer(unsigned int len, unsigned char* data)
         data++;
 	}
 	*data='\0';
-	enc28j60_dev.spi_cs(1);
+	enc28j60_dev.spi_cs_control(1);
 }
 /****************************************************************************
 * 名    称：void enc28j60WriteBuffer(unsigned int len, unsigned char* data)
@@ -89,7 +92,7 @@ void enc28j60ReadBuffer(unsigned int len, unsigned char* data)
 ****************************************************************************/ 
 void enc28j60WriteBuffer(unsigned int len, unsigned char* data)
 {
-	enc28j60_dev.spi_cs(0);
+	enc28j60_dev.spi_cs_control(0);
 	// issue write command
 	enc28j60_dev.spi_readwrite(ENC28J60_WRITE_BUF_MEM);
 
@@ -99,7 +102,7 @@ void enc28j60WriteBuffer(unsigned int len, unsigned char* data)
 		enc28j60_dev.spi_readwrite(*data);
 		data++;
 	}
-	enc28j60_dev.spi_cs(1);
+	enc28j60_dev.spi_cs_control(1);
 }
 /****************************************************************************
 * 名    称：void enc28j60SetBank(unsigned char address)
@@ -191,7 +194,7 @@ void enc28j60clkout(unsigned char clk)
 ****************************************************************************/ 
 void enc28j60Init(unsigned char* macaddr)
 {
-	enc28j60_dev.spi_cs(0);	     //SPI1 ENC28J60片选禁止  
+	enc28j60_dev.spi_cs_control(0);	     //SPI1 ENC28J60片选禁止  
 	/* ENC28J60软件复位 
 	   系统命令（软件复位）（SC） 1 1 1 | 1 1 1 1 1    N/A */
 	enc28j60WriteOp(ENC28J60_SOFT_RESET, 0, ENC28J60_SOFT_RESET); 

@@ -241,9 +241,13 @@
 #define MAX_FRAMELEN     1500   // (note: maximum ethernet frame length would be 1518)
 //#define MAX_FRAMELEN     600
 
+//enc28j60回调函数据
 struct enc28j60_interface
 {
-    void (*spi_cs)(int);    //cs
+    void (*spi_it_init)();          //中断引脚初始化
+    void (*spi_cs_init)();          //cs初始化
+    void (*spi_cs_control)(int);    //cs片选择控制
+    void (*spi_init)();             //spi初始化
     unsigned char (*spi_readwrite)(unsigned char writedat); //spi读写
 };
 

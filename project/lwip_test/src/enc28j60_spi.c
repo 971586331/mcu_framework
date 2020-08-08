@@ -1,4 +1,4 @@
-#include "main.h"
+#include "stm32f1xx_hal.h"
 #include "enc28j60_spi.h"
 
 //////////////////////////////////////////////////////////////////////////////////	 
@@ -15,6 +15,27 @@
 ////////////////////////////////////////////////////////////////////////////////// 	
 
 SPI_HandleTypeDef SPI1_Handler;  //SPI1句柄
+
+/**
+ * @description: 
+ * @param {type} 
+ * @return: 
+ */
+void spi1_it_init(void)
+{
+    GPIO_InitTypeDef GPIO_Initure;
+    
+    __HAL_RCC_GPIOA_CLK_ENABLE();               //开启GPIOA时钟
+    
+    GPIO_Initure.Pin=GPIO_PIN_1;                //PA1
+    GPIO_Initure.Mode=GPIO_MODE_IT_FALLING;      //上升沿触发
+    GPIO_Initure.Pull=GPIO_PULLUP;
+    HAL_GPIO_Init(GPIOA,&GPIO_Initure);
+
+    //中断线0-PA0
+    HAL_NVIC_SetPriority(EXTI1_IRQn,0,0);       //抢占优先级为2，子优先级为2
+    HAL_NVIC_EnableIRQ(EXTI1_IRQn);             //使能中断线0
+}
 
 /**
  * @description: 

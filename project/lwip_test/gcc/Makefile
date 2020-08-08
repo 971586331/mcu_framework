@@ -64,9 +64,7 @@ CPU = -mcpu=cortex-m3
 
 # float-abi
 
-# ASM sources
-#ASM_SOURCES =  \
-#../../../startup_stm32f103xe.s
+
 
 # mcu
 MCU = $(CPU) -mthumb $(FPU) $(FLOAT-ABI)
@@ -96,7 +94,7 @@ ifeq ($(ENC28J60_ENABLE),y)
 include ${TOP}/components/enc28j60/module.mk
 endif
 
-$(warning "C_SOURCES is$(C_SOURCES)")
+#$(warning "C_SOURCES is$(C_SOURCES)")
 
 # compile gcc flags
 ASFLAGS = $(MCU) $(AS_DEFS) $(AS_INCLUDES) $(OPT) -Wall -fdata-sections -ffunction-sections
@@ -136,6 +134,9 @@ vpath %.s $(sort $(dir $(ASM_SOURCES)))
 
 $(BUILD_DIR)/%.o: %.c Makefile | $(BUILD_DIR) 
 	$(CC) -c $(CFLAGS) -Wa,-a,-ad,-alms=$(BUILD_DIR)/$(notdir $(<:.c=.lst)) $< -o $@
+
+liucheng:Makefile 
+	@echo -alms=$(BUILD_DIR)/$(notdir $(<:.c=.lst)) $< -o $@
 
 $(BUILD_DIR)/%.o: %.s Makefile | $(BUILD_DIR)
 	$(AS) -c $(CFLAGS) $< -o $@

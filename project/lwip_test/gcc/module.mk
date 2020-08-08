@@ -9,6 +9,7 @@ C_SOURCES += $(PROJECT_SRC)/src/system_stm32f1xx.c
 C_SOURCES += $(PROJECT_SRC)/src/ethernetif_user.c
 C_SOURCES += $(PROJECT_SRC)/src/enc28j60_spi.c
 C_SOURCES += $(PROJECT_SRC)/src/lwipdemo.c
+C_SOURCES += $(PROJECT_SRC)/src/uart_printf.c
 
 ###################################################################
 #头文件路径

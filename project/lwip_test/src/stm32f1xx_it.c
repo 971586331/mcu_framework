@@ -184,12 +184,23 @@ void SysTick_Handler(void)
 {
   /* USER CODE BEGIN SysTick_IRQn 0 */
     system_tick_num += 20;
-    HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_8);
   /* USER CODE END SysTick_IRQn 0 */
     HAL_IncTick();
   /* USER CODE BEGIN SysTick_IRQn 1 */
 
   /* USER CODE END SysTick_IRQn 1 */
+}
+
+extern void process_mac(void);
+void EXTI1_IRQHandler(void)
+{
+  /* EXTI line interrupt detected */
+  if(__HAL_GPIO_EXTI_GET_IT(GPIO_PIN_1) != RESET) 
+  {
+    __HAL_GPIO_EXTI_CLEAR_IT(GPIO_PIN_1);
+    printf("it! \n");
+    process_mac();      //处理网卡数据包
+  }
 }
 
 /******************************************************************************/
