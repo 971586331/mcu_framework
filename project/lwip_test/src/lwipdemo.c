@@ -108,6 +108,7 @@ void lwip_demo(void *pdata)
 	while(1)
 	{
 		process_mac();
+        delay_ms(100);
 		
 		//process LwIP timeout
 		sys_check_timeouts();

@@ -39,5 +39,4 @@ C_INCLUDES  += -I$(LWIP_SRC)/src/include
 C_INCLUDES  += -I$(LWIP_SRC)/src/include/ipv4
 C_INCLUDES  += -I$(LWIP_SRC)/src/include/ipv4/lwip
 C_INCLUDES  += -I$(LWIP_SRC)/src/include/netif
-C_INCLUDES  += -I$(LWIP_SRC)/test/unit
 

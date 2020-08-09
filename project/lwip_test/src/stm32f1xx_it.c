@@ -194,13 +194,21 @@ void SysTick_Handler(void)
 extern void process_mac(void);
 void EXTI1_IRQHandler(void)
 {
-  /* EXTI line interrupt detected */
-  if(__HAL_GPIO_EXTI_GET_IT(GPIO_PIN_1) != RESET) 
-  {
-    __HAL_GPIO_EXTI_CLEAR_IT(GPIO_PIN_1);
-    printf("it! \n");
-    process_mac();      //处理网卡数据包
-  }
+    HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_1);
+}
+
+//中断服务程序中需要做的事情
+//在HAL库中所有的外部中断服务函数都会调用此函数
+//GPIO_Pin:中断引脚号
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
+{
+    switch(GPIO_Pin)
+    {
+        case GPIO_PIN_1:
+            printf("GPIO_PIN_1 interrupt!\n");
+            process_mac();      //处理网卡数据包
+            break;
+    }
 }
 
 /******************************************************************************/

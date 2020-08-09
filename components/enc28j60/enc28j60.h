@@ -244,6 +244,8 @@
 //enc28j60回调函数据
 struct enc28j60_interface
 {
+    void (*spi_rst_init)();
+    void (*spi_rst_control)(int);
     void (*spi_it_init)();          //中断引脚初始化
     void (*spi_cs_init)();          //cs初始化
     void (*spi_cs_control)(int);    //cs片选择控制

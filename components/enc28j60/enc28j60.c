@@ -6,13 +6,31 @@ static unsigned char Enc28j60Bank;
 static unsigned int NextPacketPtr;
 struct enc28j60_interface enc28j60_dev;
 
+void enc28j60_delay_ms(int x)
+{
+    volatile int i, j;
+    for(i = 0; i < x; i++)
+    {
+        for(j = 0; j < 5000; j++)
+        {
+
+        }
+    }
+}
+
 void enc28j60InterfaceInit(struct enc28j60_interface data)
 {
     enc28j60_dev = data;
 
+    enc28j60_dev.spi_rst_init();
     enc28j60_dev.spi_it_init();
     enc28j60_dev.spi_cs_init();
     enc28j60_dev.spi_init();
+
+    enc28j60_dev.spi_rst_control(0);
+    enc28j60_delay_ms(10);
+    enc28j60_dev.spi_rst_control(1);
+    enc28j60_delay_ms(10);
 }
 
 /****************************************************************************
@@ -184,6 +202,17 @@ void enc28j60clkout(unsigned char clk)
     //setup clkout: 2 is 12.5MHz:
 	enc28j60Write(ECOCON, clk & 0x7);
 }
+
+//读取ENC28J60的版本号
+//返回值:ENC28J60版本号
+unsigned char ENC28J60_Get_EREVID(void)
+{
+	//在EREVID 内也存储了版本信息。 EREVID 是一个只读控
+	//制寄存器，包含一个5 位标识符，用来标识器件特定硅片
+	//的版本号
+	return enc28j60Read(EREVID)&0X1F;
+}
+
 /****************************************************************************
 * 名    称：void enc28j60Init(unsigned char* macaddr)
 * 功    能：ENC28J60初始化 
@@ -194,7 +223,7 @@ void enc28j60clkout(unsigned char clk)
 ****************************************************************************/ 
 void enc28j60Init(unsigned char* macaddr)
 {
-	enc28j60_dev.spi_cs_control(0);	     //SPI1 ENC28J60片选禁止  
+	enc28j60_dev.spi_cs_control(1);	     //SPI1 ENC28J60片选禁止  
 	/* ENC28J60软件复位 
 	   系统命令（软件复位）（SC） 1 1 1 | 1 1 1 1 1    N/A */
 	enc28j60WriteOp(ENC28J60_SOFT_RESET, 0, ENC28J60_SOFT_RESET); 
@@ -203,6 +232,10 @@ void enc28j60Init(unsigned char* macaddr)
 	  许访问任何MAC、MII 或PHY 寄存器之
 	  前，必须查询CLKRDY 位。*/
 	while(!(enc28j60Read(ESTAT) & ESTAT_CLKRDY)); //    
+
+    unsigned char version=ENC28J60_Get_EREVID();      //获取 ENC28J60 的版本号
+    printf("ENC28J60 Version:%d /n",version);
+
 	// do bank 0 stuff
 	// initialize receive buffer
 	// 16-bit transfers, must write low byte first

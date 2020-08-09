@@ -21,20 +21,59 @@ SPI_HandleTypeDef SPI1_Handler;  //SPI1句柄
  * @param {type} 
  * @return: 
  */
+void spi1_rst_init(void)
+{
+    GPIO_InitTypeDef GPIO_InitStruct = {0};
+    /* GPIO Ports Clock Enable */
+    __HAL_RCC_GPIOC_CLK_ENABLE();
+    /*Configure GPIO pin : PC4 */
+    GPIO_InitStruct.Pin = GPIO_PIN_4;
+    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+    GPIO_InitStruct.Pull = GPIO_PULLUP;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
+    HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+    HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_SET);
+}
+
+/**
+ * @description: 
+ * @param {type} 
+ * @return: 
+ */
+void spi1_rst_control(int flag)
+{
+    if( flag == 1 )
+    {
+        HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_SET);
+    }
+    else
+    {
+        HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_RESET);
+    }
+    
+}
+
+/**
+ * @description: 
+ * @param {type} 
+ * @return: 
+ */
 void spi1_it_init(void)
 {
-    GPIO_InitTypeDef GPIO_Initure;
+    GPIO_InitTypeDef GPIO_InitStruct;
     
     __HAL_RCC_GPIOA_CLK_ENABLE();               //开启GPIOA时钟
     
-    GPIO_Initure.Pin=GPIO_PIN_1;                //PA1
-    GPIO_Initure.Mode=GPIO_MODE_IT_FALLING;      //上升沿触发
-    GPIO_Initure.Pull=GPIO_PULLUP;
-    HAL_GPIO_Init(GPIOA,&GPIO_Initure);
+    /*Configure GPIO pin : PA1 */
+    GPIO_InitStruct.Pin = GPIO_PIN_1;
+    GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
+    GPIO_InitStruct.Pull = GPIO_PULLUP;
+    HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
-    //中断线0-PA0
-    HAL_NVIC_SetPriority(EXTI1_IRQn,0,0);       //抢占优先级为2，子优先级为2
-    HAL_NVIC_EnableIRQ(EXTI1_IRQn);             //使能中断线0
+    /* EXTI interrupt init*/
+    HAL_NVIC_SetPriority(EXTI1_IRQn, 0, 0);
+    HAL_NVIC_EnableIRQ(EXTI1_IRQn);
 }
 
 /**
@@ -46,13 +85,16 @@ void spi1_cs_init(void)
 {
     GPIO_InitTypeDef GPIO_InitStruct = {0};
     /* GPIO Ports Clock Enable */
+    __HAL_RCC_GPIOA_CLK_ENABLE();
     __HAL_RCC_GPIOC_CLK_ENABLE();
     /*Configure GPIO pin : PC4 */
     GPIO_InitStruct.Pin = GPIO_PIN_4;
     GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-    GPIO_InitStruct.Pull = GPIO_NOPULL;
-    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+    GPIO_InitStruct.Pull = GPIO_PULLUP;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
     HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+
+    HAL_GPIO_WritePin(GPIOC, GPIO_PIN_4, GPIO_PIN_SET);
 }
 
 /**
@@ -60,7 +102,7 @@ void spi1_cs_init(void)
  * @param {type} 
  * @return: 
  */
-void spi1_cs_enable(int flag)
+void spi1_cs_control(int flag)
 {
     if( flag == 1 )
     {
@@ -85,13 +127,13 @@ void SPI1_Init(void)
     SPI1_Handler.Init.CLKPolarity=SPI_POLARITY_LOW;    //串行同步时钟的空闲状态为高电平
     SPI1_Handler.Init.CLKPhase=SPI_PHASE_1EDGE;         //串行同步时钟的第二个跳变沿（上升或下降）数据被采样
     SPI1_Handler.Init.NSS=SPI_NSS_SOFT;                 //NSS信号由硬件（NSS管脚）还是软件（使用SSI位）管理:内部NSS信号有SSI位控制
-    SPI1_Handler.Init.BaudRatePrescaler=SPI_BAUDRATEPRESCALER_8;//定义波特率预分频的值:波特率预分频值为256
+    SPI1_Handler.Init.BaudRatePrescaler=SPI_BAUDRATEPRESCALER_32;//定义波特率预分频的值:波特率预分频值为256
     SPI1_Handler.Init.FirstBit=SPI_FIRSTBIT_MSB;        //指定数据传输从MSB位还是LSB位开始:数据传输从MSB位开始
     SPI1_Handler.Init.TIMode=SPI_TIMODE_DISABLE;        //关闭TI模式
     SPI1_Handler.Init.CRCCalculation=SPI_CRCCALCULATION_DISABLE;//关闭硬件CRC校验
     SPI1_Handler.Init.CRCPolynomial=7;                  //CRC值计算的多项式
     HAL_SPI_Init(&SPI1_Handler);//初始化
-    
+
     __HAL_SPI_ENABLE(&SPI1_Handler);                    //使能SPI1
 	
     //SPI1_ReadWriteByte(0Xff);                           //启动传输

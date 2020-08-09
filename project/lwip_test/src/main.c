@@ -44,7 +44,7 @@ void delay_ms(int x)
     volatile int i, j;
     for(i = 0; i < x; i++)
     {
-        for(j = 0; j < 1000; j++)
+        for(j = 0; j < 5000; j++)
         {
 
         }
@@ -59,60 +59,42 @@ void delay_ms(int x)
   */
 int main(void)
 {
-  /* USER CODE BEGIN 1 */
+    /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
+    HAL_Init();
 
-  /* USER CODE END 1 */
-  
+    /* Configure the system clock */
+    SystemClock_Config();
 
-  /* MCU Configuration--------------------------------------------------------*/
+    /* Initialize all configured peripherals */
+    MX_GPIO_Init();
 
-  /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
-  HAL_Init();
-
-  /* USER CODE BEGIN Init */
-
-  /* USER CODE END Init */
-
-  /* Configure the system clock */
-  SystemClock_Config();
-
-  /* USER CODE BEGIN SysInit */
-
-  /* USER CODE END SysInit */
-
-  /* Initialize all configured peripherals */
-  MX_GPIO_Init();
-  /* USER CODE BEGIN 2 */
-
-  uart_init(115200);
+    uart_init(115200);
+    delay_ms(100);
 
     struct enc28j60_interface enc28j60_interface_t;
+    enc28j60_interface_t.spi_rst_init = spi1_rst_init;
+    enc28j60_interface_t.spi_rst_control = spi1_rst_control;
     enc28j60_interface_t.spi_it_init = spi1_it_init;
     enc28j60_interface_t.spi_cs_init = spi1_cs_init;
-    enc28j60_interface_t.spi_cs_control = spi1_cs_enable;
+    enc28j60_interface_t.spi_cs_control = spi1_cs_control;
     enc28j60_interface_t.spi_init = SPI1_Init;
     enc28j60_interface_t.spi_readwrite = SPI1_ReadWriteByte;
     enc28j60InterfaceInit(enc28j60_interface_t);
 
-    //lwip_demo(NULL);
+    lwip_demo(NULL);
 
-  /* USER CODE END 2 */
+    while (1)
+    {
+        // HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_8);
+        // printf("run !\n");
+        // delay_ms(1000);
 
-  /* Infinite loop */
-  /* USER CODE BEGIN WHILE */
-  while (1)
-  {
-    /* USER CODE END WHILE */
-    HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_8);
-    printf("run !\n");
-    delay_ms(1000);
-    /* USER CODE BEGIN 3 */
-    // HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8, GPIO_PIN_RESET);
-    // delay_ms(1000);
-    // HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8, GPIO_PIN_SET);
-    // delay_ms(1000);
-  }
-  /* USER CODE END 3 */
+        // HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8, GPIO_PIN_RESET);
+        // delay_ms(1000);
+        // HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8, GPIO_PIN_SET);
+        // delay_ms(1000);
+    }
+    /* USER CODE END 3 */
 }
 
 /**

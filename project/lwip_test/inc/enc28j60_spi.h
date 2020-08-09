@@ -26,9 +26,11 @@
 
 extern SPI_HandleTypeDef SPI1_Handler;  //SPI¾ä±ú
 
+void spi1_rst_init(void);
+void spi1_rst_control(int flag);
 void spi1_it_init(void);
 void spi1_cs_init(void);
-void spi1_cs_enable(int flag);
+void spi1_cs_control(int flag);
 void SPI1_Init(void);
 uint8_t SPI1_ReadWriteByte(uint8_t TxData);
 
