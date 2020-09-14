@@ -17,7 +17,7 @@ BUILD_DIR = ${TOP}/out
 #   2015-07-22 - first version
 # ------------------------------------------------
 
-GCC_PATH = ${TOP}/tool/gcc-arm-none-eabi-5_4-2016q3/bin
+GCC_PATH = ${TOP}/toolchain/gcc-arm-none-eabi-5_4-2016q3/bin
 
 ######################################
 # target

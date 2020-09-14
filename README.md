@@ -1,6 +1,6 @@
 # mcu_framework
 
-#### 介绍
+### 介绍
 这个项目是为了搭建一个mcu工程的架构，让所有的mcu开发都可以在这一个工程上进行，原先构想的架构如下图，现在先做一个简单点的。
 ![输入图片说明](https://images.gitee.com/uploads/images/2020/0730/110303_238a5e65_1625193.png "屏幕截图.png")
 各目录的功能如下：
@@ -10,10 +10,17 @@ tool：编译链等工具。
 vendor：厂商库等文件，根据所选用的mcu启用相应的支持包。
 build.sh：编译脚本。
 
-#### 使用说明
+### 使用说明
+#### makefile编译
 下载代码后，直接"./build.sh 工程名"，比如"./build.sh lwip_test"
 
-#### 参与贡献
+#### cmake编译
+mkdir build
+cd ./build
+cmake -DPROJECT=lwip_test ..
+make
+
+### 参与贡献
 
 1.  Fork 本仓库
 2.  新建 Feat_xxx 分支
