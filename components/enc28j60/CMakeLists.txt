@@ -1,6 +1,6 @@
 
-SET(C_SOURCES 
-    ./enc28j60/enc28j60.c
-    )
+SET(ENC28J60_SOURCES
+    ./enc28j60.c
+)
 
-add_library(enc28j60 ${C_SOURCES})
+add_library(enc28j60 ${ENC28J60_SOURCES})

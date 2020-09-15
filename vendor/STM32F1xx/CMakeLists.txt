@@ -1,5 +1,5 @@
 
-SET(C_SOURCES 
+SET(STM32F1XX_SOURCES 
     ./Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_gpio_ex.c
     ./Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_tim.c
     ./Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_tim_ex.c
@@ -18,4 +18,4 @@ SET(C_SOURCES
     ./Drivers/CMSIS/Device/ST/STM32F1xx/Source/Templates/gcc/startup_stm32f103xe.s
 )
 
-add_library(stm32f1xx_hal ${C_SOURCES})
+add_library(stm32f1xx_hal ${STM32F1XX_SOURCES})

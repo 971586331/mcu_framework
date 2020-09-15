@@ -1,5 +1,5 @@
 
-SET(C_SOURCES 
+SET(LWIP_SOURCES 
     ./src/netif/etharp.c
     ./src/netif/slipif.c
     ./src/core/def.c
@@ -28,4 +28,5 @@ SET(C_SOURCES
     ./src/core/ipv4/ip_frag.c
     )
 
-add_library(lwip ${C_SOURCES})
+add_library(lwip ${LWIP_SOURCES})
+

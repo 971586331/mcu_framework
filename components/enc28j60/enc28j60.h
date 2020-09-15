@@ -267,5 +267,6 @@ void enc28j60clkout(unsigned char clk);
 unsigned char enc28j60getrev(void);
 void enc28j60PacketSend(unsigned int len, unsigned char* packet);
 unsigned int enc28j60PacketReceive(unsigned int maxlen, unsigned char* packet);
+void mymacinit(unsigned char *mymac);
 
 #endif

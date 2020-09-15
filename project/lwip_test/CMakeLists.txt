@@ -10,19 +10,32 @@ add_definitions(
 -DSTM32F103xE
 )
 
-set(MCU_FLAGS "-mcpu=cortex-m4 -mfloat-abi=hard -mfpu=fpv4-sp-d16")
-set(CMAKE_C_FLAGS "${MCU_FLAGS} -w -Wno-unknown-pragmas")
-set(CMAKE_C_FLAGS_DEBUG "-O0 -g2 -ggdb")
-set(CMAKE_C_FLAGS_RELEASE "-O3")
+set(MCU_FLAGS "-mcpu=cortex-m3 -mthumb")
+set(CMAKE_C_FLAGS "${MCU_FLAGS} -Wall -fdata-sections -ffunction-sections -specs=nosys.specs")
+set(CMAKE_C_FLAGS_DEBUG "-g -gdwarf-2")
+set(CMAKE_C_FLAGS_RELEASE "")
 
 set(CMAKE_BUILD_TYPE "Debug")
 
+set(LINKER_SCRIPT ./gcc/STM32F103RCTx_FLASH.ld)
+
 include_directories(./inc)
 
-SET(C_SOURCES 
+include_directories(${CMAKE_SOURCE_DIR}/vendor/STM32F1xx/Drivers/STM32F1xx_HAL_Driver/Inc)
+include_directories(${CMAKE_SOURCE_DIR}/vendor/STM32F1xx/Drivers/CMSIS/Device/ST/STM32F1xx/Include)
+include_directories(${CMAKE_SOURCE_DIR}/vendor/STM32F1xx/Drivers/STM32F1xx_HAL_Driver/Inc/Legacy)
+include_directories(${CMAKE_SOURCE_DIR}/vendor/STM32F1xx/Drivers/CMSIS/Include)
+
+include_directories(${CMAKE_SOURCE_DIR}/components/enc28j60)
+
+include_directories(${CMAKE_SOURCE_DIR}/components/lwip-1.4.1/src/include)
+include_directories(${CMAKE_SOURCE_DIR}/components/lwip-1.4.1/src/include/ipv4)
+include_directories(${CMAKE_SOURCE_DIR}/components/lwip-1.4.1/src/include/ipv4/lwip)
+
+SET(PROJECT_SOURCES
     ./src/main.c
     ./src/enc28j60_spi.c
-    ./src/ethernetif_user.c
+    ./src/ethernetif.c
     ./src/lwipdemo.c
     ./src/stm32f1xx_hal_msp.c
     ./src/stm32f1xx_it.c
@@ -30,20 +43,20 @@ SET(C_SOURCES
     ./src/uart_printf.c
 )
 
-add_executable(lwip_test.elf C_SOURCES)
+add_executable(lwip_test.elf ${PROJECT_SOURCES})
 
-add_subdirectory(${CMAKE_SOURCE_DIR}/components/lwip-1.4.1)
+add_subdirectory(${CMAKE_SOURCE_DIR}/components/lwip-1.4.1 lwip_binary_dir)
 target_link_libraries(lwip_test.elf lwip)
 
-add_subdirectory(${CMAKE_SOURCE_DIR}/components/enc28j60)
+add_subdirectory(${CMAKE_SOURCE_DIR}/components/enc28j60 enc28j60_binary_dir)
 target_link_libraries(lwip_test.elf enc28j60)
 
-add_subdirectory(${CMAKE_SOURCE_DIR}/vendor/STM32F1xx)
+add_subdirectory(${CMAKE_SOURCE_DIR}/vendor/STM32F1xx stm32f1xx_hal_binary_dir)
 target_link_libraries(lwip_test.elf stm32f1xx_hal)
 
-set(ELF_FILE ${PROJECT_BINARY_DIR}/lwip_test.elf)
-set(HEX_FILE ${PROJECT_BINARY_DIR}/lwip_test.hex)
-set(BIN_FILE ${PROJECT_BINARY_DIR}/lwip_test.bin)
+set(ELF_FILE ${PROJECT_BINARY_DIR}/project/lwip_test/lwip_test.elf)
+set(HEX_FILE ${PROJECT_BINARY_DIR}/project/lwip_test/lwip_test.hex)
+set(BIN_FILE ${PROJECT_BINARY_DIR}/project/lwip_test/lwip_test.bin)
 
 add_custom_command(TARGET "lwip_test.elf" POST_BUILD
     COMMAND ${CMAKE_OBJCOPY} -Obinary ${ELF_FILE} ${BIN_FILE}
